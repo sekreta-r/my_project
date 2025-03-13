@@ -1,21 +1,33 @@
-package ru.hpclab.hl.module1.model;
+package ru.hpclab.hl.module1.entity;
 
-import java.util.ArrayList;
+import jakarta.persistence.*;
 import java.util.List;
+import static jakarta.persistence.GenerationType.IDENTITY;
 
-public class Courier {
+@Entity
+@Table(name = "t_courier")
+public class CourierEntity {
+
+    @Id
+    @GeneratedValue(strategy = IDENTITY)
     private Long id;
+
     private String fullName;
     private String transport;
     private String workZone;
-    private List<Delivery> deliveries = new ArrayList<>();
 
-    public Courier(Long id, String fullName, String transport, String workZone, List<Delivery> deliveries) {
+    @OneToMany(mappedBy = "courier", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<DeliveryEntity> deliveries;
+
+    public CourierEntity() {
+    }
+
+    public CourierEntity(Long id, String fullName, String transport, String workZone, List<DeliveryEntity> deliveries) {
         this.id = id;
         this.fullName = fullName;
         this.transport = transport;
         this.workZone = workZone;
-        this.deliveries = deliveries != null ? deliveries : new ArrayList<>();
+        this.deliveries = deliveries;
     }
 
     public Long getId() {
@@ -50,17 +62,17 @@ public class Courier {
         this.workZone = workZone;
     }
 
-    public List<Delivery> getDeliveries() {
+    public List<DeliveryEntity> getDeliveries() {
         return deliveries;
     }
 
-    public void setDeliveries(List<Delivery> deliveries) {
-        this.deliveries = deliveries != null ? deliveries : new ArrayList<>();
+    public void setDeliveries(List<DeliveryEntity> deliveries) {
+        this.deliveries = deliveries;
     }
 
     @Override
     public String toString() {
-        return "Courier{" +
+        return "CourierEntity{" +
                 "id=" + id +
                 ", fullName='" + fullName + '\'' +
                 ", transport='" + transport + '\'' +

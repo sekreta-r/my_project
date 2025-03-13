@@ -1,15 +1,25 @@
-package ru.hpclab.hl.module1.model;
+package ru.hpclab.hl.module1.entity;
 
-public class Parcel {
+import jakarta.persistence.*;
+
+import static jakarta.persistence.GenerationType.IDENTITY;
+
+@Entity
+@Table(name = "t_parcel")
+public class ParcelEntity {
+
+    @Id
+    @GeneratedValue(strategy = IDENTITY)
     private Long id;
+
     private double weight;
     private String dimensions;
     private String destinationAddress;
 
-    public Parcel() {
+    public ParcelEntity() {
     }
 
-    public Parcel(Long id, double weight, String dimensions, String destinationAddress) {
+    public ParcelEntity(Long id, double weight, String dimensions, String destinationAddress) {
         this.id = id;
         this.weight = weight;
         this.dimensions = dimensions;
@@ -50,7 +60,7 @@ public class Parcel {
 
     @Override
     public String toString() {
-        return "Parcel{" +
+        return "ParcelEntity{" +
                 "id=" + id +
                 ", weight=" + weight +
                 ", dimensions='" + dimensions + '\'' +

@@ -1,40 +1,25 @@
 package ru.hpclab.hl.module1.repository;
 
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-import ru.hpclab.hl.module1.model.Delivery;
-import java.util.ArrayList;
+import ru.hpclab.hl.module1.entity.DeliveryEntity;
+import ru.hpclab.hl.module1.entity.DeliveryStatus;
+import org.springframework.data.repository.query.Param;
+
+
 import java.util.List;
+import java.util.Map;
 
 @Repository
-public class DeliveryRepository {
+public interface DeliveryRepository extends JpaRepository<DeliveryEntity, Long> {
 
-    private final List<Delivery> deliveries = new ArrayList<>();
+    @Query("SELECT MONTH(d.deliveryDate) AS month, SUM(p.weight) AS totalWeight " +
+            "FROM DeliveryEntity d " +
+            "JOIN d.parcel p " +
+            "WHERE d.courier.id = :courierId AND d.status = :status " +
+            "GROUP BY MONTH(d.deliveryDate)")
+    List<Object[]> getTotalWeightByMonth(@Param("courierId") Long courierId, @Param("status") DeliveryStatus status);
 
-    public void add(Delivery delivery) {
-        deliveries.add(delivery);
-    }
 
-    public List<Delivery> getAll() {
-        return deliveries;
-    }
-
-    public Delivery findById(Long id) {
-        return deliveries.stream()
-                .filter(delivery -> delivery.getId().equals(id))
-                .findFirst()
-                .orElse(null);
-    }
-
-    public void update(Long id, Delivery newDelivery) {
-        for (int i = 0; i < deliveries.size(); i++) {
-            if (deliveries.get(i).getId().equals(id)) {
-                deliveries.set(i, newDelivery);
-                return;
-            }
-        }
-    }
-
-    public void delete(Long id) {
-        deliveries.removeIf(delivery -> delivery.getId().equals(id));
-    }
 }

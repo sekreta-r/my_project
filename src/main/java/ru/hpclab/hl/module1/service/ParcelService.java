@@ -1,38 +1,44 @@
 package ru.hpclab.hl.module1.service;
 
 import org.springframework.stereotype.Service;
+import ru.hpclab.hl.module1.entity.ParcelEntity;
 import ru.hpclab.hl.module1.model.Parcel;
 import ru.hpclab.hl.module1.repository.ParcelRepository;
+import ru.hpclab.hl.module1.mapper.ParcelMapper;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ParcelService {
-
     private final ParcelRepository parcelRepository;
 
     public ParcelService(ParcelRepository parcelRepository) {
         this.parcelRepository = parcelRepository;
     }
 
-    public Parcel addParcel(Parcel parcel) {
-        parcelRepository.add(parcel);
-        return parcel;
+    public List<ParcelEntity> getAllParcels() {
+        return parcelRepository.findAll();
     }
 
-    public List<Parcel> getAllParcels() {
-        return parcelRepository.getAll();
+    public ParcelEntity getParcelById(Long id) {
+        return parcelRepository.findById(id).orElse(null);
     }
 
-    public Parcel findById(Long id) {
-        return parcelRepository.findById(id);
+    public ParcelEntity addParcel(ParcelEntity parcel) {
+        return parcelRepository.save(parcel);
     }
 
-    public void updateParcel(Long id, Parcel parcel) {
-        parcelRepository.update(id, parcel);
+    public ParcelEntity updateParcel(Long id, ParcelEntity updatedParcel) {
+        return parcelRepository.findById(id).map(parcel -> {
+            parcel.setWeight(updatedParcel.getWeight());
+            parcel.setDimensions(updatedParcel.getDimensions());
+            parcel.setDestinationAddress(updatedParcel.getDestinationAddress());
+            return parcelRepository.save(parcel);
+        }).orElse(null);
     }
 
     public void deleteParcel(Long id) {
-        parcelRepository.delete(id);
+        parcelRepository.deleteById(id);
     }
 }
