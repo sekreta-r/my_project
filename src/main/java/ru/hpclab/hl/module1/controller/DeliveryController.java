@@ -33,6 +33,11 @@ public class DeliveryController {
         return deliveryService.saveDelivery(deliveryDTO);
     }
 
+    @PostMapping("/clear")
+    public void clearDeliveries() {
+        deliveryService.deleteAllDeliveries();
+    }
+
     @DeleteMapping("/{id}")
     public void deleteDelivery(@PathVariable Long id) {
         deliveryService.deleteDelivery(id);

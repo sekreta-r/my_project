@@ -64,5 +64,9 @@ public class DeliveryService {
                 ));
     }
 
+    public void deleteAllDeliveries() {
+        deliveryRepository.deleteAll();
+    }
+
 
 }

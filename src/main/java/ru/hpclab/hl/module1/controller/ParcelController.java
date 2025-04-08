@@ -43,4 +43,9 @@ public class ParcelController {
     public void deleteParcel(@PathVariable Long id) {
         parcelService.deleteParcel(id);
     }
+
+    @PostMapping("/clear")
+    public void clearParcels() {
+        parcelService.deleteAllParcels();
+    }
 }

@@ -1,16 +1,4 @@
 services:
-
-  init-db:
-    image: python:3.11-alpine
-    container_name: db-init
-    volumes:
-      - ./initdb:/initdb
-    working_dir: /initdb
-    entrypoint: ["python", "generate_sql.py"]
-    networks:
-      - app-network
-
-
   database:
     image: postgres:16.1-alpine3.18
     container_name: pg-docker
@@ -21,19 +9,13 @@ services:
       POSTGRES_DB: module1
     ports:
       - "5432:5432"
-    volumes:
-      - ./initdb/scripts_python:/docker-entrypoint-initdb.d
     networks:
       - app-network
-    depends_on:
-      init-db:
-        condition: service_completed_successfully
+
 
 
   app:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: sekretaria/myproject
     container_name: spring-boot-app
     restart: always
     depends_on:

@@ -41,4 +41,9 @@ public class ParcelService {
     public void deleteParcel(Long id) {
         parcelRepository.deleteById(id);
     }
+
+    public void deleteAllParcels() {
+        parcelRepository.deleteAll();
+    }
+
 }

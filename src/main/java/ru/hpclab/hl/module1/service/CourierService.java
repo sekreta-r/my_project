@@ -37,7 +37,13 @@ public class CourierService {
         return null; // или выбросить исключение, если не найден
     }
 
+
     public void deleteCourier(Long id) {
         courierRepository.deleteById(id);
     }
+
+    public void deleteAllCouriers() {
+        courierRepository.deleteAll();
+    }
 }
+

@@ -35,6 +35,11 @@ public class CourierController {
         return CourierMapper.toDTO(courierService.saveCourier(CourierMapper.toEntity(courierDTO)));
     }
 
+    @PostMapping("/clear")
+    public void clearCouriers() {
+        courierService.deleteAllCouriers();
+    }
+
     @PutMapping("/{id}")
     public CourierDTO updateCourier(@PathVariable Long id, @RequestBody CourierDTO courierDTO) {
         return CourierMapper.toDTO(courierService.updateCourier(id, CourierMapper.toEntity(courierDTO)));
@@ -44,4 +49,6 @@ public class CourierController {
     public void deleteCourier(@PathVariable Long id) {
         courierService.deleteCourier(id);
     }
+
+
 }
