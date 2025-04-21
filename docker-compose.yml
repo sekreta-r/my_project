@@ -25,7 +25,7 @@ services:
     mem_limit: ${APP_MEM_LIMIT}
     cpus: ${APP_CPU_LIMIT}
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://database:${DB_PORT:-5432}/${DB_NAME:-module1}
+      SPRING_DATASOURCE_URL: jdbc:postgresql://${DB_HOST:-localhost}:${DB_PORT:-5432}/${DB_NAME}
       SHOW_SQL: ${SHOW_SQL:-true}
       SPRING_DATASOURCE_USERNAME: ${DB_USERNAME:-postgres}
       SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD:-postgres}
