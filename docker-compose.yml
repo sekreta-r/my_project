@@ -4,15 +4,13 @@ services:
     container_name: pg-docker
     restart: always
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: module1
+      POSTGRES_USER: ${DB_USERNAME:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}
+      POSTGRES_DB: ${DB_NAME:-module1}
     ports:
-      - "5432:5432"
+      - "${DB_PORT:-5432}:5432"
     networks:
       - app-network
-
-
 
   app:
     image: sekretaria/myproject
@@ -20,16 +18,19 @@ services:
     restart: always
     depends_on:
       - database
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://database:5432/module1
-      SPRING_DATASOURCE_USERNAME: postgres
-      SPRING_DATASOURCE_PASSWORD: postgres
-      SPRING_JPA_HIBERNATE_DDL_AUTO: update
     ports:
       - "8080:8080"
     networks:
       - app-network
-
+    mem_limit: ${APP_MEM_LIMIT}
+    cpus: ${APP_CPU_LIMIT}
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://database:${DB_PORT:-5432}/${DB_NAME:-module1}
+      SHOW_SQL: ${SHOW_SQL:-true}
+      SPRING_DATASOURCE_USERNAME: ${DB_USERNAME:-postgres}
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD:-postgres}
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      TOMCAT_THREADS: ${TOMCAT_THREADS:-100}
 
 networks:
   app-network:
